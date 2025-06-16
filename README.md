@@ -64,7 +64,7 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
 
-✅ Features Implemented
+## ✅ Features Implemented
 
 - Create, edit, delete tasks & projects
 - Organize tasks under projects
@@ -73,8 +73,15 @@ For more information on using the Angular CLI, including detailed command refere
 - Filter tasks by status
 - Dashboard that shows statistics for both projects & tasks
 
-🛠️ Technical Documentation
-Architecture - Frontend: Angular (component-based architecture) - State Management: Angular signals and services (TaskService, ProjectsService) combined with BehaviorSubject for reactive updates - Routing: Angular Router used for navigation between views - Data Handling: Hybrid approach: - Tasks are loaded from a mock API (https://dummyjson.com/todos) on startup and distributed to default projects meant to visually populate the app - Additional tasks are created and stored locally using localStorage - Data is merged and kept in sync across components using RxJS and signals
+## 🛠️ Technical Documentation
+  Architecture 
+    - Frontend: Angular (component-based architecture) 
+    - State Management: Angular signals and services (TaskService, ProjectsService) combined with BehaviorSubject for reactive updates 
+    - Routing: Angular Router used for navigation between views 
+    - Data Handling: Hybrid approach: 
+        - Tasks are loaded from a mock API (https://dummyjson.com/todos) on startup and distributed to default projects meant to visually populate the app 
+        - Additional tasks are created and stored locally using localStorage 
+        - Data is merged and kept in sync across components using RxJS and signals
 
     Technologies Used
         - Angular 19
@@ -83,12 +90,18 @@ Architecture - Frontend: Angular (component-based architecture) - State Manageme
         - Angular CLI
         - Angular Material
 
-🌐 API Usage
+## 🌐 API Usage
 This project does not include a custom backend, but it fetches initial data from a public mock API for demonstration purposes.
-External API Used - URL: https://dummyjson.com/todos - Method: GET - Purpose: Load an initial set of tasks on application startup (limited to 10, and mapped to fit the app's task model)
+      External API Used 
+        - URL: https://dummyjson.com/todos   
+        - Method: GET 
+        - Purpose: Load an initial set of tasks on application startup (limited to 10, and mapped to fit the app's task model)
 
-💭 Design Decisions & Challenges
-Design Decisions - Used Angular Material for faster UI development - Decided to use services to manage task data across components - Kept routing simple: one route for project overview, one for task overview
+## 💭 Design Decisions & Challenges
+    Design Decisions 
+      - Used Angular Material for faster UI development 
+      - Decided to use services to manage task data across components 
+      - Kept routing simple: one route for project overview, one for task overview
 
     Challenges
         - Managing component communication was tricky at first
@@ -97,7 +110,7 @@ Design Decisions - Used Angular Material for faster UI development - Decided to 
         - Angular Material made it difficult to be more creative with styling choices
         - Made it much harder for myself by not utilizing signals and custom directives & pipes earlier in the process of the project
 
-📸 Screenshots
+## 📸 Screenshots
 
 ### Dashboard
 
