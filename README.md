@@ -75,6 +75,7 @@ For more information on using the Angular CLI, including detailed command refere
 
 ## 🛠️ Technical Documentation
   Architecture 
+  
     - Frontend: Angular (component-based architecture) 
     - State Management: Angular signals and services (TaskService, ProjectsService) combined with BehaviorSubject for reactive updates 
     - Routing: Angular Router used for navigation between views 
@@ -92,7 +93,8 @@ For more information on using the Angular CLI, including detailed command refere
 
 ## 🌐 API Usage
 This project does not include a custom backend, but it fetches initial data from a public mock API for demonstration purposes.
-      External API Used 
+
+        External API Used 
         - URL: https://dummyjson.com/todos   
         - Method: GET 
         - Purpose: Load an initial set of tasks on application startup (limited to 10, and mapped to fit the app's task model)
