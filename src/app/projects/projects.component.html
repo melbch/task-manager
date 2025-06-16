@@ -1,0 +1,57 @@
+<div class="projects-toolbar">
+  <!-- filter buttons, left -->
+  <div class="filter-buttons">
+    <button *ngFor="let status of allStatuses"
+            [disabled]="!hasProjects(status)"
+            (click)="toggleFilter(status)"
+            [class.active]="activeFilter === status"
+            [attr.title]="!hasProjects(status) ? 'No projects in this category' : null">
+      {{ status }}
+    </button>
+  </div>
+
+  <!-- view toggle buttons (right) -->
+  <div class="view-toggle">
+    <button
+      mat-icon-button
+      matTooltip="List View"
+      (click)="currentView = 'list'"
+      [disabled]="currentView === 'list'"
+    >
+      <mat-icon>view_agenda</mat-icon>
+    </button>
+    <button
+      mat-icon-button
+      matTooltip="Board View"
+      (click)="currentView = 'board'"
+      [disabled]="currentView === 'board'"
+    >
+      <mat-icon>table_chart</mat-icon>
+    </button>
+  </div>
+</div>
+
+<div class="content-area">
+  <!-- show board view -->
+  <app-projects-board
+    *ngIf="currentView === 'board'"
+    [projects]="projects"
+    [visibleStatuses]="visibleStatuses"
+    (editProject)="onEditProject($event)"
+    (deleteProject)="onDeleteProject($event)">
+  </app-projects-board>
+
+  <!-- show list view -->
+  <app-projects-list
+    *ngIf="currentView === 'list'"
+    [projects]="projects"
+    [activeFilter]="activeFilter"
+    [collapsedSections]="collapsedSections"
+    [visibleStatuses]="visibleStatuses"
+    (toggleSection)="onToggleSection($event)"
+    [tasks]="tasks"
+    (openProject)="openProjectModal($event)"
+    (editProject)="onEditProject($event)"
+    (deleteProject)="onDeleteProject($event)">
+  </app-projects-list>
+</div>

@@ -1,0 +1,59 @@
+<div class="modal-header">
+    <h2>{{ project.title }}</h2>
+    <div class="menu">
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="editProject(project)">
+                <mat-icon>edit</mat-icon>
+                <span>Edit</span>
+            </button>
+            <button mat-menu-item (click)="deleteProject(project)">
+                <mat-icon>delete</mat-icon>
+                <span>Remove</span>
+            </button>
+        </mat-menu>
+    </div>
+</div>
+
+<div class="status-row">
+    <div class="status-tags">
+        <span *ngFor="let tag of project.tags" class="tag">{{ tag }}</span>
+    </div>
+    <mat-progress-bar [value]="computeCompletion()" color="primary"></mat-progress-bar>
+</div>
+
+<section class="properties">
+    <div class="property-row">
+        <div class="label">Due Date</div>
+        <div class="value">{{ project.dueDate | date: 'mediumDate' }}</div>
+    </div>
+    <div class="property-row">
+        <div class="label">Priority</div>
+        <div class="value">{{ project.priority }}</div>
+    </div>
+    <div class="property-row">
+        <div class="label">Summary</div>
+        <div class="value">{{ project.summary || '-' }}</div>
+    </div>
+    </section>
+
+<section class="tasks-section">
+    <h3>Tasks</h3>
+    <ul>
+        <li 
+            *ngFor="let task of tasks"
+            (click)="openTaskDetail(task)"
+            tabindex="0"
+            role="button"
+            (keyup.enter)="openTaskDetail(task)"
+            title="Click to view task details"
+            class="clickable-task"
+        >
+            {{ task.title }}
+        </li>
+    </ul>
+</section>
+
+<button mat-button (click)="close()">Close</button>

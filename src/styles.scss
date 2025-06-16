@@ -1,1 +1,28 @@
 /* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.mat-dialog-container {
+  background: white !important;
+  padding: 24px !important;
+  border-radius: 8px !important;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2) !important;
+  max-width: 600px !important;
+}
+
+.mat-mdc-dialog-surface {
+    transform: none !important;
+    width: 600px !important; 
+    max-width: 90vw !important; 
+    padding: 24px !important; 
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2) !important; 
+    border-radius: 8px !important; 
+    background-color: whitesmoke !important;
+    color: black;
+}
+
+/* Lighten the backdrop overlay */
+.mat-mdc-button:not(:disabled) {
+    color: white !important;
+}

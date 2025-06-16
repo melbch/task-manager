@@ -1,0 +1,27 @@
+.project-card {
+    background: #fff;
+    margin: 0;
+    padding: 1rem;
+    border: 1px solid #ccc;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.tag {
+    background: #eee;
+    border-radius: 4px;
+    padding: 0.2rem 0.5rem;
+    margin-right: 0.3rem;
+    font-size: 0.75rem;
+}
+
+.mat-icon {
+    color: #333;
+    font-size: 20px;
+}

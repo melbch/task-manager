@@ -1,0 +1,9 @@
+<div class="board-container">
+    <app-board-column
+        *ngFor="let status of visibleStatuses"
+        [status]="status"
+        [projects]="filteredProjectsByStatus(status)"
+        (editProject)="onEditProject($event)"
+        (deleteProject)="onDeleteProject($event)">
+    </app-board-column>
+</div>

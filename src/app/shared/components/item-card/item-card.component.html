@@ -1,0 +1,8 @@
+<div class="card">
+  <h4>{{ item.title }}</h4>
+  <p *ngIf="itemType === 'task'">Due: {{ item.dueDate | date }}</p>
+  <p>Status: {{ item.status }}</p>
+
+  <button (click)="onEditClicked()">Edit</button>
+  <button (click)="onDeleteClicked()">Delete</button>
+</div>

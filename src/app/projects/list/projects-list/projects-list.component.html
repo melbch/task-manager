@@ -1,0 +1,73 @@
+<div class="projects-list-container">
+    <ng-container *ngFor="let status of allStatuses"> <!-- because you can't have more than 1 structural directives on the same element -->
+        <div 
+            class="section"
+            *ngIf="hasProjects(status)"
+            [class.collapsed]="isCollapsed(status)"
+        >
+            <!-- section header -->
+            <div
+                class="section-header"
+                [ngStyle]="{ 'background-color': getColor(status) }"
+                (click)="toggleCollapsed(status)"
+                role="button"
+                tabindex="0"
+                [attr.aria-expanded]="!isCollapsed(status)"
+            >
+                <h3>{{ status }}</h3>
+                <span class="count"> {{ filteredProjectsByStatus(status).length }}</span>
+                <span class="collapse-icon">{{ isCollapsed(status) ? '▶' : '▼' }}</span>
+            </div>
+
+            <!-- column titles only shows when expanded -->
+            <div class="list-header" *ngIf="!isCollapsed(status)">
+                <span class="col project-name">Project Name</span>
+                <span class="col status"><span class="material-icons">info</span>Status</span>
+                <span class="col due-date"><span class="material-icons">event</span>Due Date</span>
+                <span class="col priority"><span class="material-icons">priority_high</span>Priority</span>
+                <span class="col completion"><span class="material-icons">check_circle</span>Completion</span>
+                <span class="col actions"></span>
+            </div>
+
+            <!-- project rows -->
+            <div *ngIf="!isCollapsed(status)"> <!-- because you can't have more than 1 structural directive on the same element -->
+                <div 
+                    class="project-row" 
+                    *ngFor="let project of filteredProjectsByStatus(status)"
+                    (click)="onProjectClicked(project)"
+                    tabindex="0"
+                    role="button"
+                    (keydown.enter)="onProjectClicked(project)"
+                >
+                    <span class="col project-name">{{ project.title }}</span>
+                    <span class="col status">{{ project.status }}</span>
+                    <span class="col due-date">{{ project.dueDate | date:'EEE, MMM d, yyyy' }}</span>
+                    <span class="col priority">{{ project.priority || '-'}}</span>
+                    <span class="col completion">
+                        <mat-progress-bar
+                            [value]="getCompletion(project)"
+                            mode="determinate"
+                            color="primary"
+                        ></mat-progress-bar>
+                    </span>
+                    <span class="col actions">
+                        <button mat-icon-button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
+                            <mat-icon>more_vert</mat-icon>
+                        </button>
+
+                        <mat-menu #menu="matMenu">
+                            <button mat-menu-item (click)="editProjectClicked(project)">
+                                <mat-icon>edit</mat-icon>
+                                <span>Edit</span>
+                            </button>
+                            <button mat-menu-item (click)="deleteProjectClicked(project)">
+                                <mat-icon>delete</mat-icon>
+                                <span>Remove</span>
+                            </button>
+                        </mat-menu>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</div>

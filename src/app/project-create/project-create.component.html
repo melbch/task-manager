@@ -1,0 +1,111 @@
+<form [formGroup]="projectForm" (ngSubmit)="onSubmit()" class="project-create-form">
+
+    <!-- project title -->
+    <div class="form-row">
+        <mat-icon>folder</mat-icon>
+        <label>Project Title</label>
+        <mat-form-field appearance="fill">
+            <input matInput formControlName="title" placeholder="Enter project title" />
+            <mat-error *ngIf="hasError('title', 'required')">
+                Title is required
+            </mat-error>
+        </mat-form-field>
+    </div> 
+
+    <!-- due date with buttons -->
+    <div class="form-row">
+        <mat-icon>event</mat-icon>
+        <label>Due Date</label>
+
+        <div class="date-buttons">
+            <button mat-button type="button" (click)="setDueDateToday()">Today</button>
+            <button mat-button type="button" (click)="setDueDate(tomorrow)">Tomorrow</button>
+        </div>
+
+        <mat-form-field appearance="fill">
+            <input 
+                matInput 
+                [matDatepicker]="picker" 
+                formControlName="dueDate" 
+                placeholder="Pick a date" 
+                readonly />
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+
+            <mat-error *ngIf="hasError('dueDate', 'required')">
+                Due date is required
+            </mat-error>
+        </mat-form-field>
+    </div>
+
+    <!-- priority -->
+    <div class="priority-toggle">
+        <mat-icon>flag</mat-icon>
+        <label>Priority</label>
+        <mat-button-toggle-group formControlName="priority" aria-label="Priority">
+            <mat-button-toggle value="Low">Low</mat-button-toggle>
+            <mat-button-toggle value="Medium">Medium</mat-button-toggle>
+            <mat-button-toggle value="High">High</mat-button-toggle>
+        </mat-button-toggle-group>
+
+        <mat-error *ngIf="hasError('priority', 'required')">
+            Priority is required
+        </mat-error>
+    </div>
+
+    <!-- status -->
+    <div class="status-toggle">
+        <mat-icon>info</mat-icon>
+        <label>Status</label>
+        <mat-button-toggle-group formControlName="status" aria-label="Status">
+            <mat-button-toggle *ngFor="let status of statusOptions" [value]="ProjectStatus[status]">
+                {{ formatStatusLabel(status )}}
+            </mat-button-toggle>
+        </mat-button-toggle-group>
+
+        <mat-error *ngIf="hasError('status', 'required')">
+            Status is required
+        </mat-error>
+    </div>
+
+    <!-- tags -->
+    <div class="tags">
+        <mat-icon>label</mat-icon>
+        <label>Tags</label>
+        <div class="chip-container">
+            <input 
+                placeholder="Add a tag"
+                matInput
+                [matChipInputFor]="chipList"
+                [matChipInputSeparatorKeyCodes]="[13, 188]"
+                [matChipInputAddOnBlur]="true"
+                (matChipInputTokenEnd)="addTag($event, $event.input)"  
+            />
+            
+            <mat-chip-grid #chipList aria-label="Project tags">
+                <mat-chip 
+                    *ngFor="let tag of tags.controls; let i = index" 
+                    (removed)="removeTag(i)"
+                >
+                    {{ tag.value }}
+                    <mat-icon matChipRemove>cancel</mat-icon>
+                </mat-chip>
+            </mat-chip-grid>
+        </div>
+    </div>
+
+    <!-- description -->
+    <div class="form-section">
+        <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Description (optional)</mat-label>
+            <textarea matInput formControlName="description" rows="4"></textarea>
+        </mat-form-field>
+    </div>
+
+    <!-- create button -->
+    <div class="form-footer">
+        <button mat-raised-button color="primary" type="submit" [disabled]="projectForm.invalid">
+            Create Project
+        </button>
+    </div>
+</form>

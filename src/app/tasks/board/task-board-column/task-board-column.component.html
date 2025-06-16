@@ -1,0 +1,27 @@
+<div class="column" [class.collapsed]="collapsed">
+    <div 
+        class="column-header"
+        [ngStyle]="{'background-color': getColor(status)}"
+        (click)="toggleCollapsed()"
+        role="button"
+        tabindex="0"
+        (keydown.enter)="toggleCollapsed()"
+        (keydown.space)="toggleCollapsed()"
+        [attr.aria-expanded]="!collapsed"
+        style="cursor: pointer"
+    >
+        <h3>{{ status }}</h3>
+        <span class="collapse-icon" [class.collapsed]="collapsed">▼</span>
+    </div>
+
+    <div class="task-list" *ngIf="!collapsed">
+        <app-task-card 
+            *ngFor="let task of tasks" 
+            [task]="task"
+            [project]="getProjectForTask(task)"
+            [allTasks]="tasks"
+            (editTask)="onEditTask($event)"
+            (deleteTask)="onDeleteTask($event)">
+        </app-task-card>
+    </div>
+</div>

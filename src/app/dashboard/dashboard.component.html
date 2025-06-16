@@ -1,0 +1,56 @@
+<div class="dashboard">
+    <div class="dashboard-sections side-by-side">
+        
+        <!-- Projects section -->
+        <section class="dashboard-card">
+            <h2>Projects</h2>
+            
+            <div class="charts-row">
+                <apx-chart
+                    [series]="projectRadialChart.series"
+                    [chart]="projectRadialChart.chart"
+                    [plotOptions]="projectRadialChart.plotOptions"
+                    [fill]="projectRadialChart.fill"
+                    [labels]="projectRadialChart.labels"
+                    [dataLabels]="projectRadialChart.dataLabels"
+                ></apx-chart>
+
+                <apx-chart
+                    [series]="projectDonutChart.series"
+                    [chart]="projectDonutChart.chart"
+                    [labels]="projectDonutChart.labels"
+                    [plotOptions]="projectDonutChart.plotOptions"
+                    [fill]="projectDonutChart.fill"
+                    [dataLabels]="projectDonutChart.dataLabels"
+                    [colors]="projectDonutChart.colors"
+                ></apx-chart>
+            </div>
+        </section>
+
+        <!-- Tasks section -->
+        <section class="dashboard-card">
+            <h2>Tasks</h2>
+            
+            <div class="charts-row">
+                <apx-chart
+                    [series]="taskRadialChart.series"
+                    [chart]="taskRadialChart.chart"
+                    [labels]="taskRadialChart.labels"
+                    [plotOptions]="taskRadialChart.plotOptions"
+                    [fill]="taskRadialChart.fill"
+                    [dataLabels]="taskRadialChart.dataLabels"
+                ></apx-chart>
+                
+                <apx-chart
+                    [series]="taskDonutChart.series"
+                    [chart]="taskDonutChart.chart"
+                    [labels]="taskDonutChart.labels"
+                    [colors]="taskDonutChart.colors"
+                    [plotOptions]="taskDonutChart.plotOptions"
+                    [fill]="taskDonutChart.fill"
+                    [dataLabels]="taskDonutChart.dataLabels"
+                ></apx-chart>
+            </div>
+        </section>
+    </div>
+</div>

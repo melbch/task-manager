@@ -1,0 +1,63 @@
+<div class="modal-header">
+    <h2>{{ task().title }}</h2>
+    <div class="menu">
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item>
+                <mat-icon>edit</mat-icon>
+                <span>Edit</span>
+            </button>
+            <button mat-menu-item (click)="deleteTask(task())">
+                <mat-icon>delete</mat-icon>
+                <span>Remove</span>
+            </button>
+        </mat-menu>
+    </div>
+</div>
+
+<div class="status-row">
+    <div class="status-tags">
+        <span *ngFor="let tag of task().tags" class="tag">{{ tag }}</span>
+    </div>
+    <mat-progress-bar [value]="task().completion || 0" color="primary"></mat-progress-bar>
+</div>
+
+<section class="properties">
+    <div class="property-row">
+        <div class="label">Project</div>
+        <div class="value project-link" (click)="goToProject()">{{ project.title }}</div>
+    </div>
+    <div class="property-row">
+        <div class="label">Status</div>
+        <div class="value">{{ task().status }}</div>
+    </div>
+    <div class="property-row">
+        <div class="label">Due Date</div>
+        <div class="value">{{ task().dueDate | date: 'mediumDate' }}</div>
+    </div>
+    <div class="property-row">
+        <div class="label">Priority</div>
+        <div class="value">{{ task().priority || '-' }}</div>
+    </div>
+    <div class="property-row">
+        <div class="label">Completed</div>
+        <div class="value">{{ task().completed ? 'Yes' : 'No' }}</div>
+    </div>
+</section>
+
+<section class="tasks-section" *ngIf="relatedTasks && relatedTasks.length">
+    <h3>Other Tasks in Project</h3>
+    <ul>
+        <li 
+            *ngFor="let t of relatedTasks" 
+            [class.current-task]="t.id === task().id"
+            (click)="openTaskModal(t)"
+        >
+            {{ t.title }}
+        </li>
+    </ul>
+</section>
+
+<button mat-button (click)="close()">Close</button>

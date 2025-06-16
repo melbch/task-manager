@@ -1,0 +1,27 @@
+<div class="project-card" (click)="openProjectModal()">
+    <div class="card-header">
+        <h4>{{ project.title }}</h4>
+        <div class="menu">
+            <button mat-icon-button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
+                <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="editProjectClicked(project)">
+                    <mat-icon>edit</mat-icon>
+                    <span>Edit</span>
+                </button>
+                <button mat-menu-item (click)="deleteProjectClicked(project)">
+                    <mat-icon>delete</mat-icon>
+                    <span>Remove</span>
+                </button>
+            </mat-menu>
+        </div>
+    </div>
+
+    <div class="card-body">
+        <p>Due: {{ project.dueDate | date:'EEE, MMM d, y' }}</p>
+        <div class="tags">
+            <span *ngFor="let tag of project.tags" class="tag">{{ tag }}</span>
+        </div>
+    </div>
+</div>

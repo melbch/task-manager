@@ -1,0 +1,28 @@
+<div class="task-card" (click)="openTaskDetail()" style="cursor: pointer">
+    <div class="card-header">
+        <h4>{{ task.title }}</h4>
+
+        <div class="menu">
+            <button mat-icon-button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
+                <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="editTaskClicked(task)">
+                    <mat-icon>edit</mat-icon>
+                    <span>Edit</span>
+                </button>
+                <button mat-menu-item (click)="deleteTaskClicked(task)">
+                    <mat-icon>delete</mat-icon>
+                    <span>Remove</span>
+                </button>
+            </mat-menu>
+        </div>
+    </div>
+
+    <div class="card-body">
+        <p class="project-name">📁 {{ projectName }}</p>
+        <div *ngIf="task.tags?.length" class="tags">
+            <span *ngFor="let tag of task.tags" class="tag">{{ tag }}</span>
+        </div>
+    </div>
+</div>

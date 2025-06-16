@@ -1,0 +1,25 @@
+<div class="column" [class.collapsed]="collapsed">
+    <div 
+        class="column-header" 
+        [ngStyle]="{'background-color': getColor(status)}"
+        (click)="toggleCollapsed()"
+        role="button"
+        tabindex="0"
+        (keydown.enter)="toggleCollapsed()"
+        (keydown.space)="toggleCollapsed()"
+        [attr.aria-expanded]="!collapsed"
+        style="cursor: pointer"
+    >
+        <h3>{{ status }}</h3>
+        <span class="collapse-icon">▼</span>
+    </div>
+
+    <div class="project-list" *ngIf="!collapsed">
+        <app-project-card 
+            *ngFor="let project of projects" 
+            [project]="project"
+            (editProject)="editProject.emit($event)"
+            (deleteProject)="deleteProject.emit($event)">
+        </app-project-card>
+    </div>
+</div>

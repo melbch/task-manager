@@ -1,0 +1,18 @@
+<header class="header">
+    <input 
+        type="search" 
+        placeholder="Search projects or tasks" 
+        [(ngModel)]="searchText" 
+        class="search-input"
+    />
+
+    <div class="header-actions">
+        <div class="dropdown-wrapper" [class.open]="dropdownOpen" (clickOutside)="dropdownOpen = false">
+            <button class="btn new-btn" (click)="toggleDropdown()">+ New</button>
+            <ul class="dropdown-menu" *ngIf="dropdownOpen">
+                <li><a routerLink="/create-project" (click)="closeDropdown()">New Project</a></li>
+                <li><a routerLink="/create-task" (click)="closeDropdown()">New Task</a></li>
+            </ul>
+        </div>
+    </div>
+</header>

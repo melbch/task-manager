@@ -1,0 +1,138 @@
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;    
+
+    h2 {
+        margin: 0;
+        font-weight: 700;
+        font-size: 1.8rem;
+        color: #222;
+    }   
+
+    .menu {
+        button.mat-icon-button {
+            color: #444;    
+            &:hover {
+                background-color: rgba(0, 0, 0, 0.04);
+            }
+        }
+    }
+}
+
+.status-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;  
+
+    .status-tags {
+        display: flex;
+        gap: 0.5rem;  
+
+        .tag {
+            background-color: #eee;
+            border-radius: 4px;
+            padding: 0.2rem 0.6rem;
+            font-size: 0.85rem;
+            color: #555;
+            font-weight: 600;
+        }
+    }   
+
+    mat-progress-bar {
+        flex-grow: 1;
+        margin-left: 1rem;
+        height: 6px;
+        border-radius: 3px;
+    }
+}
+
+.properties {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin-bottom: 1.5rem;
+
+    .property-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.4rem 0;
+
+        .label {
+            font-weight: 600;
+            color: #666;
+            flex-basis: 30%;
+        }
+
+        .value {
+            flex-basis: 65%;
+            text-align: right;
+            color: #222;
+            word-wrap: break-word;
+        }
+
+        .project-link {
+            cursor: pointer;
+            color: #1976d2; 
+            text-decoration: underline;
+            transition: color 0.2s ease;    
+            
+            &:hover {
+                color: #0d47a1;
+            }
+        }
+    }
+}
+
+.tasks-section {
+    h3 {
+        font-size: 1.2rem;
+        margin-bottom: 0.8rem;
+        font-weight: 700;
+        color: #222;
+    }   
+
+    ul {
+        list-style-type: none;
+        padding-left: 0;
+        max-height: 200px;
+        overflow-y: auto; 
+
+        li {
+            padding: 0.4rem 0.8rem;
+            border-bottom: 1px solid #ddd;
+            color: #1976d2;
+            font-weight: 600;
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background-color 0.2s ease, color 0.2s ease, text-decoration 0.2s ease;
+
+            &:hover,
+            &:focus {
+                background-color: #e3f2fd;
+                color: #0d47a1;
+                text-decoration: underline;
+                outline: none;
+            }
+        }
+    }
+}
+
+button[mat-button] {
+    display: block;
+    margin: 0 auto;
+    margin-top: 1.2rem;
+    background-color: #1976d2;
+    color: white;
+    border-radius: 4px;
+    padding: 0.5rem 1.5rem; 
+    
+    &:hover {
+        background-color: #0d47a1;
+    }
+}
