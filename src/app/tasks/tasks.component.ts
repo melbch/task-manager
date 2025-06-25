@@ -8,6 +8,7 @@ import { TasksBoardComponent } from './board/tasks-board/tasks-board.component';
 import { TasksListComponent } from './list/tasks-list/tasks-list.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
+import { FilterBarComponent } from '../shared/components/filter-bar/filter-bar/filter-bar.component';
 
 @Component({
   selector: 'app-tasks',
@@ -17,7 +18,8 @@ import { MatIconModule } from '@angular/material/icon';
     TasksBoardComponent,
     TasksListComponent,
     MatTooltipModule,
-    MatIconModule
+    MatIconModule,
+    FilterBarComponent
   ],
   templateUrl: './tasks.component.html',
   styleUrl: './tasks.component.scss'
@@ -31,12 +33,14 @@ export class TasksComponent implements OnInit {
 
   currentView: 'board' | 'list' = 'list';
 
-  constructor(private taskService: TaskService, private router: Router) {}
+  constructor(
+    private taskService: TaskService, 
+    private router: Router
+  ) {}
   
   ngOnInit() {
     this.taskService.tasks$.subscribe(tasks => {
       this.tasks = tasks;
-      console.log('Tasks received in TasksComponent:', tasks.length);
     });
   }
 
@@ -44,11 +48,6 @@ export class TasksComponent implements OnInit {
     this.selectedTask = { ...task };
     this.isEditMode = true;
     this.router.navigate(['/tasks/edit', task.id]);
-  }
-
-  onDeleteTask(task: Task) {
-    const taskId = task.id.toString();
-    this.taskService.deleteTask(taskId);
   }
 
   collapsedSections: Record<TaskStatus, boolean> = Object.values(TaskStatus)
@@ -61,21 +60,34 @@ export class TasksComponent implements OnInit {
     this.collapsedSections[status] = !this.collapsedSections[status];
   }
 
-  filteredTasksByStatus(status: TaskStatus): Task[] {
-    if (this.activeFilter && this.activeFilter !== status) return [];
-    return this.tasks.filter(t => t.status === status);
-  }
-
-  hasTasks(status: TaskStatus): boolean {
-    return this.filteredTasksByStatus(status).length > 0;
-  }
-
   toggleFilter(status: TaskStatus): void {
     this.activeFilter = this.activeFilter === status ? null : status;
   }
 
+  onCategoryChange(newFilter: string | null) {
+    if (newFilter === null) {
+      this.activeFilter = null;
+      return;
+    }
+
+    if (this.allStatuses.includes(newFilter as TaskStatus)) {
+      this.activeFilter = newFilter as TaskStatus;
+    } else {
+      console.warn(`Invalid task status received: ${newFilter}`);
+      this.activeFilter = null;
+    }
+  }
+
+  getDisabledStatuses(): TaskStatus[] {
+    return this.allStatuses.filter(
+      status => !this.tasks.some(task => task.status === status)
+    );
+  }
+
   isVisible(status: TaskStatus): boolean {
-    if (this.activeFilter === null) return this.hasTasks(status);
+    if (this.activeFilter === null) {
+      return this.tasks.some(t => t.status === status);
+    }
     return this.activeFilter === status;
   }
 

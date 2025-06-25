@@ -6,6 +6,8 @@ import { Project } from '../projects/Models/project.model';
 import { ProjectStatus } from '../projects/Models/project-status.enum';
 import { ProjectsService } from '../services/projects.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AutoFocusDirective } from '../shared/directives/auto-focus/auto-focus.directive';
+import { CapitalizePipe } from '../shared/pipes/capitalize/capitalize.pipe';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -31,7 +33,8 @@ import { MatSelectModule } from '@angular/material/select';
     MatNativeDateModule,
     MatButtonModule,
     MatButtonToggleModule,
-    MatSelectModule
+    MatSelectModule,
+    AutoFocusDirective
   ],
   templateUrl: './project-create.component.html',
   styleUrl: './project-create.component.scss'
@@ -54,7 +57,8 @@ export class ProjectCreateComponent implements OnInit {
     private fb: FormBuilder,
     private projectsService: ProjectsService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private capitalizePipe: CapitalizePipe
   ) {}
 
   ngOnInit() {
@@ -126,8 +130,11 @@ export class ProjectCreateComponent implements OnInit {
     if (this.projectForm.valid) {
       const formValue = this.projectForm.value;
 
+      const capitalizedTitle = this.capitalizePipe.transform(formValue.title);
+
       const projectData: Project = {
         ...formValue,
+        title: capitalizedTitle,
         id: this.isEditMode && this.editingProjectId
           ? this.editingProjectId
           : this.projectsService['generateId'](),

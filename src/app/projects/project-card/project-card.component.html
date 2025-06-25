@@ -1,6 +1,6 @@
-<div class="project-card" (click)="openProjectModal()">
+<div class="project-card" (click)="openProjectModal()" style="cursor: pointer" appHoverHighlight>
     <div class="card-header">
-        <h4>{{ project.title }}</h4>
+        <h4>{{ project.title | capitalize }}</h4>
         <div class="menu">
             <button mat-icon-button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
                 <mat-icon>more_vert</mat-icon>

@@ -1,67 +1,73 @@
 <div class="tasks-list-container">
     <ng-container *ngFor="let status of allStatuses">
-        <div
-          class="section"
-          *ngIf="hasTasks(status)"
-          [class.collapsed]="isCollapsed(status)"
-        >
-            <!-- section header -->
-            <div
-                class="section-header"
-                [ngStyle]="{ 'background-color': getColor(status) }"
-                (click)="toggleCollapsed(status)"
-                role="button"
-                tabindex="0"
-                [attr.aria-expanded]="!isCollapsed(status)"
-            >
-                <h3>{{ status }}</h3>
-                <span class="count">{{ filteredTasksByStatus(status).length }}</span>
-                <span class="collapse-icon">{{ isCollapsed(status) ? '▶' : '▼' }}</span>
-            </div>
+        <ng-container *ngIf="!activeFilter || activeFilter === status">
+            <ng-container *ngIf="(tasks | filterByStatus: status)!.length > 0">
+                <div
+                  class="section"
+                  [class.collapsed]="isCollapsed(status)"
+                >
+                    <!-- section header -->
+                    <div
+                        class="section-header"
+                        [ngStyle]="{ 'background-color': getColor(status) }"
+                        (click)="toggleCollapsed(status)"
+                        role="button"
+                        tabindex="0"
+                        [attr.aria-expanded]="!isCollapsed(status)"
+                    >
+                        <h3>{{ status }}</h3>
+                        <span class="count">{{ (tasks | filterByStatus: status).length }}</span>
+                        <span class="collapse-icon">{{ isCollapsed(status) ? '▶' : '▼' }}</span>
+                    </div>
 
-            <!-- column headers -->
-            <div class="list-header" *ngIf="!isCollapsed(status)">
-                <span class="col checkbox"></span>
-                <span class="col task-title">Task</span>
-                <span class="col status"><mat-icon>info</mat-icon>Status</span>
-                <span class="col due-date"><mat-icon>event</mat-icon>Due Date</span>
-                <span class="col priority"><mat-icon>priority_high</mat-icon>Priority</span>
-                <span class="col completion"><mat-icon>folder</mat-icon>Project</span>
-                <span class="col actions"></span>
-            </div>
+                    <!-- column headers -->
+                    <div class="list-header" *ngIf="!isCollapsed(status)">
+                        <span class="col checkbox"></span>
+                        <span class="col task-title">Task</span>
+                        <span class="col status"><mat-icon>info</mat-icon>Status</span>
+                        <span class="col due-date"><mat-icon>event</mat-icon>Due Date</span>
+                        <span class="col priority"><mat-icon>priority_high</mat-icon>Priority</span>
+                        <span class="col completion"><mat-icon>folder</mat-icon>Project</span>
+                        <span class="col actions"></span>
+                    </div>
 
-            <!-- task rows -->
-            <div *ngIf="!isCollapsed(status)">
-                <div class="task-row" *ngFor="let task of filteredTasksByStatus(status)" (click)="openTaskDetail(task)">
-                    
-                    <span class="col checkbox">
-                        <mat-checkbox [(ngModel)]="task.completed" (click)="$event.stopPropagation()"></mat-checkbox>
-                    </span>
-                    <span class="col task-title">{{ task.title }}</span>
-                    <span class="col status">{{ task.status }}</span>
-                    <span class="col due-date">{{ task.dueDate | date: 'EEE, MMM d, yyyy' }}</span>
-                    <span class="col priority">{{ task.priority || '-' }}</span>
-                    <span class="col project-name">
-                        {{ getProjectName(task.projectId) }}
-                    </span>
-                    <span class="col actions" (click)="$event.stopPropagation()">
-                        <button mat-icon-button [matMenuTriggerFor]="taskMenu">
-                            <mat-icon>more_vert</mat-icon>
-                        </button>
-                    
-                        <mat-menu #taskMenu="matMenu">
-                            <button mat-menu-item (click)="editTask(task)">
-                                <mat-icon>edit</mat-icon>
-                                <span>Edit</span>
-                            </button>
-                            <button mat-menu-item (click)="deleteTask(task)">
-                                <mat-icon>delete</mat-icon>
-                                <span>Remove</span>
-                            </button>
-                        </mat-menu>
-                    </span>
+                    <!-- task rows -->
+                    <div *ngIf="!isCollapsed(status)">
+                        <div class="task-row" 
+                            *ngFor="let task of (tasks | filterByStatus: status)" 
+                            (click)="openTaskDetail(task)"
+                            appHoverHighlight
+                        >
+                            <span class="col checkbox">
+                                <mat-checkbox [(ngModel)]="task.completed" (click)="$event.stopPropagation()"></mat-checkbox>
+                            </span>
+                            <span class="col task-title">{{ task.title | capitalize }}</span>
+                            <span class="col status">{{ task.status }}</span>
+                            <span class="col due-date">{{ task.dueDate | date: 'EEE, MMM d, yyyy' }}</span>
+                            <span class="col priority">{{ task.priority || '-' }}</span>
+                            <span class="col project-name">
+                                {{ getProjectName(task.projectId) }}
+                            </span>
+                            <span class="col actions" (click)="$event.stopPropagation()">
+                                <button mat-icon-button [matMenuTriggerFor]="taskMenu">
+                                    <mat-icon>more_vert</mat-icon>
+                                </button>
+                            
+                                <mat-menu #taskMenu="matMenu">
+                                    <button mat-menu-item (click)="editTask(task)">
+                                        <mat-icon>edit</mat-icon>
+                                        <span>Edit</span>
+                                    </button>
+                                    <button mat-menu-item (click)="deleteTask(task)">
+                                        <mat-icon>delete</mat-icon>
+                                        <span>Remove</span>
+                                    </button>
+                                </mat-menu>
+                            </span>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
+            </ng-container>
+        </ng-container>
     </ng-container>
 </div>

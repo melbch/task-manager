@@ -5,7 +5,7 @@
         <mat-icon>folder</mat-icon>
         <label>Project Title</label>
         <mat-form-field appearance="fill">
-            <input matInput formControlName="title" placeholder="Enter project title" />
+            <input matInput formControlName="title" placeholder="Enter project title" appAutoFocus />
             <mat-error *ngIf="hasError('title', 'required')">
                 Title is required
             </mat-error>

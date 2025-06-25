@@ -5,7 +5,7 @@
         <mat-icon>check_circle</mat-icon>
         <label>Task Title</label>
         <mat-form-field appearance="fill">
-            <input matInput formControlName="title" placeholder="Enter task title" />
+            <input matInput formControlName="title" placeholder="Enter task title" appAutoFocus />
             <mat-error *ngIf="hasError('title', 'required')">
                 Title is required
             </mat-error>

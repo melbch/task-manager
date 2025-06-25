@@ -9,7 +9,10 @@ import { TaskCardComponent } from '../../task-card/task-card.component';
 @Component({
   selector: 'app-task-board-column',
   standalone: true,
-  imports: [CommonModule, TaskCardComponent],
+  imports: [
+    CommonModule, 
+    TaskCardComponent
+  ],
   templateUrl: './task-board-column.component.html',
   styleUrl: './task-board-column.component.scss'
 })

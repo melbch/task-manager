@@ -8,6 +8,8 @@ import { ProjectsListComponent } from './list/projects-list/projects-list.compon
 import { Task } from '../tasks/Models/task.model';
 import { TaskService } from '../services/task.service';
 import { ProjectDetailModalComponent } from './project-detail-modal/project-detail-modal.component';
+import { FilterBarComponent } from '../shared/components/filter-bar/filter-bar/filter-bar.component';
+import { DialogService } from '../shared/services/dialog.service';
 
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
@@ -17,7 +19,14 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-projects',
   standalone: true,
-  imports: [CommonModule, ProjectsBoardComponent, ProjectsListComponent, MatTooltipModule, MatIconModule],
+  imports: [
+    CommonModule, 
+    ProjectsBoardComponent, 
+    ProjectsListComponent, 
+    MatTooltipModule, 
+    MatIconModule,
+    FilterBarComponent
+  ],
   templateUrl: './projects.component.html',
   styleUrl: './projects.component.scss'
 })
@@ -36,7 +45,8 @@ export class ProjectsComponent implements OnInit {
     private projectsService: ProjectsService,
     private taskService: TaskService,
     private dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private dialogService: DialogService
   ) {}
 
   ngOnInit() {
@@ -100,13 +110,35 @@ export class ProjectsComponent implements OnInit {
     this.collapsedSections[status] = !this.collapsedSections[status];
   }
 
-  filteredProjectsByStatus(status: ProjectStatus): Project[] {
-    if (this.activeFilter && this.activeFilter !== status) return [];
-    return this.projects.filter(p => p.status === status);
+  get filteredProjects(): Project[] {
+    if (this.activeFilter === null) {
+      return this.projects;
+    }
+    return this.projects.filter(p => p.status === this.activeFilter);
+  }
+
+  onCategoryChange (newFilter: string | null) {
+    if (newFilter === null) {
+      this.activeFilter = null;
+      return;
+    }
+  
+    if (this.allStatuses.includes(newFilter as ProjectStatus)) {
+      this.activeFilter = newFilter as ProjectStatus;
+    } else {
+      console.warn(`Invalid project status received: ${newFilter}`);
+      this.activeFilter = null;
+    }
+  }
+
+  getDisabledStatuses(): ProjectStatus[] {
+    return this.allStatuses.filter(
+      status => !this.projects.some(project => project.status === status)
+    );
   }
 
   hasProjects(status: ProjectStatus): boolean {
-    return this.filteredProjectsByStatus(status).length > 0;
+    return this.filteredProjects.some(p => p.status === status);
   }
 
   toggleFilter(status: ProjectStatus): void {
@@ -119,6 +151,12 @@ export class ProjectsComponent implements OnInit {
   }
 
   get visibleStatuses(): ProjectStatus[] {
-    return this.allStatuses.filter(status => this.isVisible(status));
+    if (this.activeFilter === null) {
+      return this.allStatuses.filter(status =>
+        this.projects.some(project => project.status === status)
+      );
+    }
+
+    return [this.activeFilter];
   }
 }

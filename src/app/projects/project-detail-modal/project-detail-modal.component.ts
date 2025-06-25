@@ -1,10 +1,12 @@
 import { Component, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { Project } from '../Models/project.model';
 import { ProjectsService } from '../../services/projects.service';
 import { Task } from '../../tasks/Models/task.model';
 import { TaskDetailModalComponent } from '../../tasks/task-detail-modal/task-detail-modal.component';
+import { DialogService } from '../../shared/services/dialog.service';
 
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatButtonModule } from '@angular/material/button';
@@ -27,7 +29,9 @@ export class ProjectDetailModalComponent {
     @Inject(MAT_DIALOG_DATA) public data: { project: Project; tasks: Task[] },
     private dialogRef: MatDialogRef<ProjectDetailModalComponent>,
     private dialog: MatDialog,
-    private projectsService: ProjectsService
+    private router: Router,
+    private projectsService: ProjectsService,
+    private dialogService: DialogService
   ) {
     this.project = data.project;
     this.tasks = data.tasks;
@@ -59,14 +63,25 @@ export class ProjectDetailModalComponent {
   }
 
   editProject(project: Project) {
-    console.log('Editing project:', this.project);
-    // implement edit logic or emit an event
+    this.dialogRef.close();
+    
+    setTimeout(() => {
+      this.router.navigate(['/projects/edit', project.id]).then(success => {
+        if (!success) {
+          console.error('Navigation failed!');
+        }
+      });
+    }, 0);
   }
 
-  deleteProject(project: Project) {
-    const confirmed = confirm(`Are you sure you want to delete "${project.title}"?`);
-    if (confirmed) {
-      this.projectsService.deleteProject(project.id);
-    }
+  deleteProject(project: Project): void {
+    this.dialogService
+      .confirm('Delete Project', `Are you sure you want to delete "${project.title}"?`)
+      .subscribe(confirmed => {
+        if (confirmed) {
+          this.projectsService.deleteProject(project.id);
+          this.dialogRef.close();
+        }
+      });
   }
 }

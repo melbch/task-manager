@@ -90,11 +90,9 @@ export class TaskService {
           priority: this.normalizePriority(t.priority)
         }));
 
-        console.log('API tasks loaded & mapped:', mappedTasks.length);
         const allTasks = [...mappedTasks, ...this.localTasks];
         this._tasks.set(allTasks);
         this.tasksSubject.next(allTasks);
-        console.log('All tasks after merge:', this._tasks());
       }),
       catchError(this.handleError('loadInitialTasks', []))
     ).subscribe();

@@ -1,14 +1,11 @@
 <div class="projects-toolbar">
-  <!-- filter buttons, left -->
-  <div class="filter-buttons">
-    <button *ngFor="let status of allStatuses"
-            [disabled]="!hasProjects(status)"
-            (click)="toggleFilter(status)"
-            [class.active]="activeFilter === status"
-            [attr.title]="!hasProjects(status) ? 'No projects in this category' : null">
-      {{ status }}
-    </button>
-  </div>
+  <!-- reusable filter bar (left) -->
+  <app-filter-bar
+    [categories]="allStatuses"
+    [disabledCategories]="getDisabledStatuses()"
+    [selectedCategory]="activeFilter"
+    (categoryChange)="onCategoryChange($event)">
+  </app-filter-bar>
 
   <!-- view toggle buttons (right) -->
   <div class="view-toggle">

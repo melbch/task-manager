@@ -8,11 +8,21 @@ import { MatDialog } from '@angular/material/dialog';
 import { TaskService } from '../../services/task.service';
 import { ProjectsService } from '../../services/projects.service';
 import { ProjectDetailModalComponent } from '../project-detail-modal/project-detail-modal.component';
+import { HoverHighlightDirective } from '../../shared/directives/hover-highlight/hover-highlight.directive';
+import { CapitalizePipe } from '../../shared/pipes/capitalize/capitalize.pipe';
+import { DialogService } from '../../shared/services/dialog.service';
 
 @Component({
   selector: 'app-project-card',
   standalone: true,
-  imports: [CommonModule, MatMenuModule, MatIconModule, MatButtonModule],
+  imports: [
+    CommonModule, 
+    MatMenuModule, 
+    MatIconModule, 
+    MatButtonModule, 
+    HoverHighlightDirective,
+    CapitalizePipe
+  ],
   templateUrl: './project-card.component.html',
   styleUrl: './project-card.component.scss'
 })
@@ -25,7 +35,8 @@ export class ProjectCardComponent {
   constructor(
     private dialog: MatDialog, 
     private taskService: TaskService,
-    private projectsService: ProjectsService
+    private projectsService: ProjectsService,
+    private dialogService: DialogService
   ) {}
 
   openProjectModal() {
@@ -49,9 +60,12 @@ export class ProjectCardComponent {
   }
 
   deleteProjectClicked(project: Project) {
-    const confirmed = confirm(`Are you sure you want to delete "${project.title}"?`);
-    if (confirmed) {
-      this.deleteProject.emit(this.project);
-    }
-  } 
+    this.dialogService
+      .confirm('Delete Project', `Are you sure you want to delete "${project.title}"?`)
+      .subscribe(confirmed => {
+        if (confirmed) {
+          this.deleteProject.emit(this.project);
+        }
+      });
+  }
 }

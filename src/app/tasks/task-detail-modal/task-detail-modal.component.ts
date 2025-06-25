@@ -1,5 +1,6 @@
 import { Component, Inject, computed, effect, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { ProjectDetailModalComponent } from '../../projects/project-detail-modal/project-detail-modal.component';
 import { Task } from '../Models/task.model';
@@ -9,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { DialogService } from '../../shared/services/dialog.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
@@ -35,6 +37,8 @@ export class TaskDetailModalComponent {
   private dialogRef = inject(MatDialogRef<TaskDetailModalComponent>);
   private dialog = inject(MatDialog);
   private taskService = inject(TaskService);
+  private dialogService = inject(DialogService);
+  private router = inject(Router);
 
   task = signal<Task>(this.data.task);
   project: Project = this.data.project;
@@ -83,10 +87,26 @@ export class TaskDetailModalComponent {
     });
   }
 
+  editTask(task: Task) {
+    this.dialogRef.close();
+    
+    setTimeout(() => {
+      this.router.navigate(['/tasks/edit', task.id]).then(success => {
+        if (!success) {
+          console.error('Navigation failed!');
+        }
+      });
+    }, 0);
+  }
+
   deleteTask(task: Task): void {
-    const confirmed = confirm(`Are you sure you want to delete the task "${task.title}"?`);
-    if (confirmed) {
-      this.taskService.deleteTask(task.id);
-    }
+    this.dialogService
+      .confirm('Delete Task', `Are you sure you want to delete the task "${task.title}"?`)
+      .subscribe(confirmed => {
+        if (confirmed) {
+          this.taskService.deleteTask(task.id);
+          this.dialogRef.close();
+        }
+      });
   }
 }

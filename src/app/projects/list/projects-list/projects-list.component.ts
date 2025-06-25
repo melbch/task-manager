@@ -4,17 +4,30 @@ import { Router } from '@angular/router';
 import { Project } from '../../Models/project.model';
 import { ProjectStatus } from '../../Models/project-status.enum';
 import { Task } from '../../../tasks/Models/task.model';
+import { FilterByStatusPipe } from '../../../shared/pipes/filter-by-status/filter-by-status.pipe';
+import { ProjectsService } from '../../../services/projects.service';
+import { HoverHighlightDirective } from '../../../shared/directives/hover-highlight/hover-highlight.directive';
+import { CapitalizePipe } from '../../../shared/pipes/capitalize/capitalize.pipe';
+import { DialogService } from '../../../shared/services/dialog.service';
 
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { ProjectsService } from '../../../services/projects.service';
 
 @Component({
   selector: 'app-projects-list',
   standalone: true,
-  imports: [CommonModule, MatProgressBarModule, MatMenuModule, MatIconModule, MatButtonModule],
+  imports: [
+    CommonModule, 
+    MatProgressBarModule, 
+    MatMenuModule, 
+    MatIconModule, 
+    MatButtonModule,
+    FilterByStatusPipe,
+    HoverHighlightDirective,
+    CapitalizePipe
+  ],
   templateUrl: './projects-list.component.html',
   styleUrl: './projects-list.component.scss'
 })
@@ -32,12 +45,14 @@ export class ProjectsListComponent implements OnInit {
 
   allStatuses = Object.values(ProjectStatus);
 
-  constructor(private projectsService: ProjectsService, private router: Router) {}
+  constructor(
+    private projectsService: ProjectsService, 
+    private router: Router,
+    private dialogService: DialogService
+  ) {}
 
   ngOnInit() {
-    this.projectsService.projects$.subscribe(projects => {
-      this.projects = projects;
-    });
+  
   }
 
   onProjectClicked(project: Project) {
@@ -46,24 +61,6 @@ export class ProjectsListComponent implements OnInit {
 
   editProjectClicked(project: Project) {
     this.editProject.emit(project);
-  }
-
-  filteredProjectsByStatus(status: ProjectStatus): Project[] {
-    if (this.visibleStatuses.length && !this.visibleStatuses.includes(status)) {
-      return [];
-    }
-    let filtered = this.projects.filter(p => p.status === status);
-    if (this.activeFilter !== null) {
-      filtered = filtered.filter(p => p.status === this.activeFilter);
-    }
-    return filtered;
-  }
-
-  hasProjects(status: ProjectStatus): boolean {
-    if (this.visibleStatuses.length && !this.visibleStatuses.includes(status)) {
-      return false;
-    }
-    return this.filteredProjectsByStatus(status).length > 0;
   }
 
   toggleCollapsed(status: ProjectStatus): void {
@@ -75,10 +72,13 @@ export class ProjectsListComponent implements OnInit {
   }
 
   deleteProjectClicked(project: Project) {
-    const confirmed = confirm(`Are you sure you want to delete "${project.title}"?`);
-    if (confirmed) {
-      this.deleteProject.emit(project);
-    }
+    this.dialogService
+      .confirm('Delete Project', `Are you sure you want to delete "${project.title}"?`)
+      .subscribe(confirmed => {
+        if (confirmed) {
+          this.deleteProject.emit(project); // emit only if confirmed
+        }
+      });
   }
 
   getColor(status: ProjectStatus): string {

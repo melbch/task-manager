@@ -1,6 +1,6 @@
-<div class="task-card" (click)="openTaskDetail()" style="cursor: pointer">
+<div class="task-card" (click)="openTaskDetail()" style="cursor: pointer" appHoverHighlight>
     <div class="card-header">
-        <h4>{{ task.title }}</h4>
+        <h4>{{ task.title | capitalize }}</h4>
 
         <div class="menu">
             <button mat-icon-button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">

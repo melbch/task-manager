@@ -1,0 +1,35 @@
+mat-dialog-title {
+    font-size:  20px !important;
+    margin-top: 8px;
+    font-weight: 600 !important;
+    color: #222 !important;
+}
+
+mat-dialog-content p {
+    font-size:  14px;
+    color: #222;
+}
+
+mat-dialog-actions {
+    margin-top: 16px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+button {
+    min-width: 80px;
+    color: white;
+    background-color: #1976d2; 
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+    
+    &:hover {
+        background-color: #1565c0;
+    }
+
+    &:focus {
+        outline: 2px solid #1565c0;
+        outline-offset: 2px;
+    }
+}

@@ -8,6 +8,8 @@ import { TaskStatus } from '../tasks/Models/task-status.enum';
 import { TaskService } from '../services/task.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AutoFocusDirective } from '../shared/directives/auto-focus/auto-focus.directive';
+import { CapitalizePipe } from '../shared/pipes/capitalize/capitalize.pipe';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -33,7 +35,8 @@ import { MatSelectModule } from '@angular/material/select';
     MatNativeDateModule,
     MatButtonModule,
     MatButtonToggleModule,
-    MatSelectModule
+    MatSelectModule,
+    AutoFocusDirective
   ],
   templateUrl: './task-create.component.html',
   styleUrl: './task-create.component.scss'
@@ -53,7 +56,8 @@ export class TaskCreateComponent implements OnInit {
     private projectsService: ProjectsService,
     private taskService: TaskService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private capitalizePipe: CapitalizePipe
   ) {}
 
   ngOnInit() {
@@ -152,6 +156,8 @@ export class TaskCreateComponent implements OnInit {
     if (this.taskForm.valid) {
       const formValue = this.taskForm.value;
 
+      const capitalizedTitle = this.capitalizePipe.transform(formValue.title);
+
       const statusMap: { [key: string]: TaskStatus } = {
         'In Review': TaskStatus.InReview,
         'To Do': TaskStatus.Todo,
@@ -163,7 +169,7 @@ export class TaskCreateComponent implements OnInit {
         id: this.isEditMode && this.editingTaskId
           ? this.editingTaskId
           : (Date.now().toString()),
-        title: formValue.title,
+        title: capitalizedTitle,
         projectId: formValue.projectId,
         dueDate: formValue.dueDate ?? undefined,
         priority: formValue.priority,
@@ -183,6 +189,6 @@ export class TaskCreateComponent implements OnInit {
     
     this.taskForm.reset();
     this.tags.clear();
-    this.router.navigate(['/tasks']);
+    this.router.navigate(['/tasks']); 
   }
 }

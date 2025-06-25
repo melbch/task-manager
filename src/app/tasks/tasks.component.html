@@ -1,14 +1,12 @@
 <div class="tasks-toolbar">
-  <!-- filter buttons, left -->
-  <div class="filter-buttons">
-    <button *ngFor="let status of allStatuses"
-            [disabled]="!hasTasks(status)"
-            (click)="toggleFilter(status)"
-            [class.active]="activeFilter === status"
-            [attr.title]="!hasTasks(status) ? 'No tasks in this category' : null">
-      {{ status }}
-    </button>
-  </div>
+  <!-- filter bar (left) -->
+   <app-filter-bar
+    [categories]="allStatuses"
+    [disabledCategories]="getDisabledStatuses()"
+    [selectedCategory]="activeFilter"
+    (categoryChange)="onCategoryChange($event)"
+   >
+   </app-filter-bar>
 
   <!-- view toggle buttons (right) -->
   <div class="view-toggle">
@@ -36,7 +34,8 @@
   <app-tasks-board
     *ngIf="currentView === 'board'"
     [tasks]="tasks"
-    [visibleStatuses]="visibleStatuses">
+    [visibleStatuses]="visibleStatuses"
+    [activeFilter]="activeFilter">
   </app-tasks-board>
 
   <!-- show list view -->

@@ -9,11 +9,20 @@ import { ProjectsService } from '../../services/projects.service';
 import { Project } from '../../projects/Models/project.model';
 import { MatDialog } from '@angular/material/dialog';
 import { TaskDetailModalComponent } from '../task-detail-modal/task-detail-modal.component';
+import { HoverHighlightDirective } from '../../shared/directives/hover-highlight/hover-highlight.directive';
+import { CapitalizePipe } from '../../shared/pipes/capitalize/capitalize.pipe';
 
 @Component({
   selector: 'app-task-card',
   standalone: true,
-  imports: [CommonModule, MatMenuModule, MatIconModule, MatButtonModule],
+  imports: [
+    CommonModule, 
+    MatMenuModule, 
+    MatIconModule, 
+    MatButtonModule, 
+    HoverHighlightDirective,
+    CapitalizePipe
+  ],
   templateUrl: './task-card.component.html',
   styleUrl: './task-card.component.scss'
 })
@@ -59,9 +68,6 @@ export class TaskCardComponent implements OnInit {
   }
 
   deleteTaskClicked(task: Task) {
-    const confirmed = confirm(`Are you sure you want to delete "${task.title}"?`);
-    if (confirmed) {
-      this.deleteTask.emit(task);
-    }
+    this.deleteTask.emit(task);
   }
 }

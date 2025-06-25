@@ -2,8 +2,9 @@
     <app-task-board-column
         *ngFor="let status of visibleStatuses"
         [status]="status"
-        [tasks]="filteredTasksByStatus(status)"
+        [tasks]="tasks | filterByStatus: status"
         [projects]="projects"
-        (editTask)="onEditTask($event)">
+        (editTask)="onEditTask($event)"
+        (deleteTask)="deleteTask($event)">
     </app-task-board-column>
 </div>

@@ -1,8 +1,8 @@
 <div class="projects-list-container">
-    <ng-container *ngFor="let status of allStatuses"> <!-- because you can't have more than 1 structural directives on the same element -->
+    <ng-container *ngFor="let status of (activeFilter ? [activeFilter] : allStatuses)"> <!-- because you can't have more than 1 structural directives on the same element -->
         <div 
             class="section"
-            *ngIf="hasProjects(status)"
+            *ngIf="(projects | filterByStatus: status).length > 0"
             [class.collapsed]="isCollapsed(status)"
         >
             <!-- section header -->
@@ -15,7 +15,7 @@
                 [attr.aria-expanded]="!isCollapsed(status)"
             >
                 <h3>{{ status }}</h3>
-                <span class="count"> {{ filteredProjectsByStatus(status).length }}</span>
+                <span class="count"> {{ (projects | filterByStatus: status).length }}</span>
                 <span class="collapse-icon">{{ isCollapsed(status) ? '▶' : '▼' }}</span>
             </div>
 
@@ -33,13 +33,14 @@
             <div *ngIf="!isCollapsed(status)"> <!-- because you can't have more than 1 structural directive on the same element -->
                 <div 
                     class="project-row" 
-                    *ngFor="let project of filteredProjectsByStatus(status)"
+                    *ngFor="let project of projects | filterByStatus: status"
                     (click)="onProjectClicked(project)"
                     tabindex="0"
                     role="button"
                     (keydown.enter)="onProjectClicked(project)"
+                    appHoverHighlight
                 >
-                    <span class="col project-name">{{ project.title }}</span>
+                    <span class="col project-name">{{ project.title | capitalize }}</span>
                     <span class="col status">{{ project.status }}</span>
                     <span class="col due-date">{{ project.dueDate | date:'EEE, MMM d, yyyy' }}</span>
                     <span class="col priority">{{ project.priority || '-'}}</span>
